@@ -30,6 +30,16 @@ npm run dev
 
 ## 上线验收（未执行）
 
+### 可重复的 r13 API 隔离测试
+
+已从118按既有CA严格TLS只读取得 r13 external_api.js，SHA256 `943c570998c20982d417297003c545d41b1016842ac652494027cc1b2ac88992`。不纳入产品源码或交付。启动本地开发服务后，在已安装 Playwright Python/Chromium 的环境执行：
+
+```powershell
+D:/Python/python.exe tests/r13-api-browser.py <external_api.js本地路径>
+```
+
+脚本拦截全部非本地请求，真实API仅用于创建iframe；验证8443房间地址、音视频授权声明、深链禁用参数和离会移除，不连接真实会议。不证明iframe内Jitsi UI、WebRTC媒体或微信兼容性。生产仍须独立路径及真机验收。
+
 1. 外部设备严格验证完整证书链、IP SAN、有效期与自动续期；页面可信不等于 iframe/信令可信，不跳过 TLS。
 2. 受控 Jitsi 固定版本关闭移动 App 强制推广，并核验该版本有效配置；现有前端 disableDeepLinking 不保证服务端生效。
 3. 正确 iframe `allow`/Permissions-Policy、CSP、WSS/BOSH、JVB 公网候选及必要 TURN；不能把 HTTPS 反向代理当媒体代理。

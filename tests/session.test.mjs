@@ -37,3 +37,20 @@ test('forwards events, errors, and releases meeting on readyToClose', () => {
   log.events.readyToClose();
   assert.equal(closed, true); assert.equal(log.disposed, 1);
 });
+test('explicitly disables modern deep linking despite inherited server policy', () => {
+  const { session, log } = fixture();
+  session.join({ room: '855851964', name: '访客' });
+  assert.deepEqual(log.options.configOverwrite.deeplinking, { disabled: true });
+});
+test('late events from disposed iframe cannot close a new meeting', () => {
+  const { session, log } = fixture();
+  let closed = 0;
+  session.join({ room: '855851964', name: '访客', onClose: () => closed++ });
+  const oldClose = log.events.readyToClose;
+  session.dispose();
+  session.join({ room: '855851965', name: '访客' });
+  oldClose();
+  assert.equal(log.disposed, 1);
+  assert.equal(closed, 0);
+  assert.ok(session.api);
+});

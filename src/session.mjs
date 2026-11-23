@@ -22,14 +22,19 @@ export class Session {
         prejoinConfig: { enabled: true },
         startWithAudioMuted: !audio,
         startWithVideoMuted: !video,
-        disableDeepLinking: true
+        disableDeepLinking: true,
+        deeplinking: { disabled: true }
       }
     });
-    this.api.addEventListener('videoConferenceJoined', () => onJoined?.());
-    this.api.addEventListener('errorOccurred', event => onError?.(event));
-    this.api.addEventListener('cameraError', event => onError?.(event));
-    this.api.addEventListener('micError', event => onError?.(event));
-    this.api.addEventListener('readyToClose', () => { this.dispose(); onClose?.(); });
+    const current = this.api;
+    const listen = (name, callback) => current.addEventListener(name, event => {
+      if (this.api === current) callback(event);
+    });
+    listen('videoConferenceJoined', () => onJoined?.());
+    listen('errorOccurred', event => onError?.(event));
+    listen('cameraError', event => onError?.(event));
+    listen('micError', event => onError?.(event));
+    listen('readyToClose', () => { this.dispose(); onClose?.(); });
   }
 
   dispose() {
