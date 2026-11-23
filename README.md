@@ -30,6 +30,18 @@ npm run dev
 
 ## 上线验收（未执行）
 
+### 真实 Jitsi 准备页检查（只读、显式运行）
+
+启动 `npm run dev` 并提供经核对的**公开根证书**文件后：
+
+```powershell
+D:/Python/python.exe tests/live-prejoin.py <public-ca.crt> <本地证据目录>
+```
+
+此测试从本地H5加载118真实API及Jitsi页面，检查准备页“加入会议”按钮、两种深链禁用配置、默认静音/关视频、信令origin及离会移除。仅抓取GET静态资源，阻断信令HTTP/WebSocket，不点击Jitsi加入，不测试会议准入或媒体。Python严格使用指定公开CA验证IP/证书，并将响应提供给隔离浏览器；不导入系统信任、不忽略TLS，但也**不证明浏览器/微信默认信任此CA**。
+
+2026-11-23：390×844 Chromium与Android微信UA模拟两项检查通过；准备页显示正常，`/lang/countries-zh-CN.json`返回404（非本次H5代码，未修改服务器）。微信UA模拟不等于微信/企业微信真机。测试不进入默认 `npm test`，需显式授权目标只读请求，保留测试结果JSON/截图于仓库外。
+
 ### 可重复的 r13 API 隔离测试
 
 已从118按既有CA严格TLS只读取得 r13 external_api.js，SHA256 `943c570998c20982d417297003c545d41b1016842ac652494027cc1b2ac88992`。不纳入产品源码或交付。启动本地开发服务后，在已安装 Playwright Python/Chromium 的环境执行：
