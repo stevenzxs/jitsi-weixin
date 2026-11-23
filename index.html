@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="light">
+  <title>云会议 · 网页入会</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./src/style.css">
+  <script type="module" src="./src/app.mjs"></script>
+</head>
+<body>
+  <header class="masthead"><a href="./" class="brand" aria-label="云会议首页"><span class="brand-mark" aria-hidden="true">云</span> 云会议 <span class="edition">WEB</span></a><span class="private-note">无需安装 · 网页参会</span></header>
+  <main id="lobby" class="layout">
+    <section class="intro" aria-labelledby="headline">
+      <p class="eyebrow">CLOUDMEET / MEET IN YOUR BROWSER</p>
+      <h1 id="headline">相聚，<br>只需一个链接。</h1>
+      <p class="lead">不用下载，保持连接。<br>在微信、企业微信或浏览器中，加入同一场会议。</p>
+      <div class="connection-art" aria-hidden="true"><span class="person one">你</span><span class="line"></span><span class="person two">我</span><span class="person three">他</span><span class="art-label">让沟通，少一点距离</span></div>
+      <p class="footnote">部分内置浏览器可能需要使用系统浏览器。<br>音视频需要你的授权，页面不会自动打开设备。</p>
+    </section>
+    <section class="join-card" aria-labelledby="meeting-title">
+      <div class="card-top"><span class="pill">会议邀请</span><span id="client-label">浏览器访问</span></div>
+      <h2 id="meeting-title">准备加入会议</h2>
+      <p class="card-desc">填写昵称，选择你的入会方式。</p>
+      <form id="join-form">
+        <label for="room">会议号</label>
+        <input id="room" name="room" inputmode="numeric" autocomplete="off" placeholder="输入 9 位会议号" pattern="[1-9][0-9]{8}" maxlength="9" required>
+        <label for="name">你的昵称</label>
+        <input id="name" name="name" autocomplete="nickname" placeholder="让大家知道你是谁" maxlength="40" required>
+        <fieldset><legend>入会设备</legend><label class="device"><input id="audio" type="checkbox"><span>开启麦克风<small>默认静音入会</small></span></label><label class="device"><input id="video" type="checkbox"><span>开启摄像头<small>默认关闭画面</small></span></label></fieldset>
+        <div class="status" role="status" aria-live="polite"><span id="status-dot" class="dot"></span><span id="status">正在检查环境…</span></div>
+        <button id="join" type="submit" class="primary" disabled>加入会议 <span aria-hidden="true">↗</span></button>
+        <p class="permission-note">点击后进入会议准备页，按提示授权。<br>会议密码、等候室及主持人准入规则仍然有效。</p>
+      </form>
+      <details><summary>微信里无法加入？</summary><p>点击右上角菜单，选择“在浏览器中打开”。如无此选项，请复制链接，在 Safari、Chrome 或 Edge 中打开。</p><button id="copy" type="button" class="text-button">复制邀请链接</button><p>拒绝权限后，请检查系统设置中的微信/企业微信相机和麦克风权限，关闭页面后重新打开。手机后台或锁屏可能中断通话。</p></details>
+    </section>
+  </main>
+  <section id="meeting" hidden aria-label="会议窗口"><div class="meeting-bar"><span id="meeting-state" role="status">正在连接会议…</span><button id="leave" type="button">退出并返回</button></div><div id="meeting-error" role="alert" hidden></div><div id="frame"></div></section>
+  <footer id="footer">CLOUDMEET <span>把时间留给沟通</span></footer>
+</body>
+</html>

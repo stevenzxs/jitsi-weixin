@@ -3,3 +3,4 @@ config/
 coverage/
 runtime-config.json
 *.log
+.playwright-mcp/
